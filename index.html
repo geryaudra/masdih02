@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <title>
+   Warga Peduli &ndash; Lapor Fasilitas Publik
+  </title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Quicksand:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   :root{--g:#14472f;--g2:#1f6b47;--y:#f4c430;--y2:#fff6d6;--ink:#1d2b24;--mut:#5d6b63;--line:#e3e8e4;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:var(--ink);font-family:Quicksand,Poppins,sans-serif;font-size:16px;line-height:1.65}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif;color:var(--g);line-height:1.2;margin:0 0 .5em}
+a{color:var(--g2)}
+:focus-visible{outline:3px solid var(--y);outline-offset:2px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#fff;border-bottom:1px solid var(--line)}
+.bar{max-width:1080px;margin:auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-family:'Playfair Display',serif;font-weight:700;font-size:1.3rem;color:var(--g);text-decoration:none}
+.logo span{color:var(--y);text-shadow:0 0 1px #b8901a}
+nav a{margin-left:16px;text-decoration:none;font-weight:600;color:var(--ink);padding:4px 0;border-bottom:3px solid transparent}
+nav a.on{border-color:var(--y);color:var(--g)}
+main{max-width:1080px;margin:auto;padding:0 20px 56px}
+.page{display:none}.page.show{display:block}
+.btn{display:inline-block;background:var(--y);color:var(--g);font:700 1rem Quicksand,sans-serif;padding:14px 28px;border:0;border-radius:999px;cursor:pointer;text-decoration:none}
+.btn:hover{background:#ffd54f}
+.btn.dk{background:var(--g);color:#fff}
+.btn.sm{padding:9px 18px;font-size:.9rem}
+.hero{margin:20px -20px 0;position:relative;background:linear-gradient(#f3f8f1,#fff6d6);overflow:hidden;border-radius:0 0 28px 28px}
+.hero svg{display:block;width:100%;height:auto;min-height:260px}
+.hero .txt{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 7%;max-width:640px}
+.hero h1{font-size:clamp(2rem,5.5vw,3.4rem);margin-bottom:.3em}
+.hero p{margin:0 0 1.2em;max-width:44ch;font-weight:500}
+h2.sec{font-size:clamp(1.5rem,3vw,2rem);margin-top:52px}
+.lead{color:var(--mut);max-width:60ch;margin-top:-.2em}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+.cat{border:1.5px solid var(--line);border-radius:20px;padding:18px;background:#fff;text-align:center}
+.cat:nth-child(odd){border-color:#cfe0d4}
+.cat svg{width:84px;height:84px}
+.cat h3{font-size:1.05rem;margin:.4em 0 .2em}
+.cat p{margin:0 0 12px;font-size:.88rem;color:var(--mut)}
+.cta{margin-top:44px;background:var(--g);color:#fff;border-radius:24px;padding:34px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cta h2{color:#fff;margin:0}
+.ph{padding:44px 0 4px}
+.ph h1{font-size:clamp(1.8rem,4vw,2.6rem)}
+.grid2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px;align-items:start}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}nav a{margin-left:10px}}
+.card{border:1.5px solid var(--line);border-radius:22px;padding:24px;background:#fff}
+label{display:block;font-weight:700;margin:16px 0 6px;color:var(--g)}
+input,select,textarea{width:100%;font:500 1rem Quicksand,sans-serif;padding:12px 14px;border:1.5px solid #cfd8d2;border-radius:14px;background:#fff;color:var(--ink)}
+textarea{min-height:100px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.photo{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.preview{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+.preview img,.preview video{width:110px;height:110px;object-fit:cover;border-radius:14px;border:2px solid var(--y)}
+#cam{display:none;margin-top:12px}
+#cam video{width:100%;max-width:360px;border-radius:16px;background:#000;height:auto}
+.hint{font-size:.85rem;color:var(--mut);margin:4px 0 0}
+.ok{display:none;background:var(--y2);border:2px solid var(--y);border-radius:18px;padding:18px;margin-top:18px}
+.err{color:#a3321f;font-size:.9rem;min-height:1.2em;margin:6px 0 0}
+.tel{list-style:none;margin:0;padding:0}
+.tel li{display:flex;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
+.tel b{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--g)}
+.tel small{display:block;color:var(--mut)}
+.law{border-left:5px solid var(--y);padding:4px 0 4px 18px;margin:16px 0}
+.law h3{font-size:1.1rem;margin-bottom:.2em}
+.law p{margin:0;color:var(--mut)}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.post{border:1.5px solid var(--line);border-radius:20px;overflow:hidden}
+.post svg{width:100%;height:120px;background:var(--y2);display:block}
+.post div{padding:18px}
+.post h3{font-size:1.1rem}
+footer{background:var(--g);color:#d9e6dd;padding:26px 20px;text-align:center;font-size:.9rem}
+footer b{color:var(--y)}
+  </style>
+ </head>
+ <body>
+  <!-- Ilustrasi (symbol) -->
+  <svg aria-hidden="true" height="0" style="position:absolute" width="0">
+   <defs>
+    <symbol id="i-tree" viewbox="0 0 100 100">
+     <rect fill="#cfd8d2" height="6" rx="3" width="88" x="6" y="84">
+     </rect>
+     <g transform="rotate(-72 50 84)">
+      <rect fill="#8a5a2b" height="46" rx="3" width="10" x="45" y="40">
+      </rect>
+      <circle cx="50" cy="30" fill="#2f8a57" r="22">
+      </circle>
+      <circle cx="36" cy="40" fill="#1f6b47" r="14">
+      </circle>
+      <circle cx="64" cy="38" fill="#256f4c" r="14">
+      </circle>
+     </g>
+    </symbol>
+    <symbol id="i-light" viewbox="0 0 100 100">
+     <rect fill="#5d6b63" height="32" width="12" x="44" y="60">
+     </rect>
+     <rect fill="#14472f" height="56" rx="14" width="40" x="30" y="8">
+     </rect>
+     <circle cx="50" cy="22" fill="#4d5b53" r="9">
+     </circle>
+     <circle cx="50" cy="36" fill="#4d5b53" r="9">
+     </circle>
+     <circle cx="50" cy="50" fill="#4d5b53" r="9">
+     </circle>
+     <path d="M42 44l16 12M58 44L42 56" opacity="0" stroke="#f4c430" stroke-linecap="round" stroke-width="3">
+     </path>
+    </symbol>
+    <symbol id="i-pole" viewbox="0 0 100 100">
+     <rect fill="#8a5a2b" height="82" width="8" x="46" y="10">
+     </rect>
+     <rect fill="#8a5a2b" height="6" rx="3" width="52" x="24" y="22">
+     </rect>
+     <rect fill="#8a5a2b" height="5" rx="2" width="36" x="32" y="40">
+     </rect>
+     <path d="M4 30Q24 44 24 25M96 30Q76 44 76 25" fill="none" stroke="#14472f" stroke-width="2">
+     </path>
+     <path d="M60 52l-10 18h9l-6 16 16-22h-9z" fill="#f4c430" stroke="#b8901a" stroke-width="1.5">
+     </path>
+    </symbol>
+    <symbol id="i-pot" viewbox="0 0 100 100">
+     <path d="M0 62h100v30H0z" fill="#5d6b63">
+     </path>
+     <path d="M0 62h100" stroke="#f4c430" stroke-dasharray="14 10" stroke-width="4">
+     </path>
+     <ellipse cx="50" cy="76" fill="#1d2b24" rx="26" ry="10">
+     </ellipse>
+     <path d="M26 76q24-14 48 0" fill="none" stroke="#8a97a0" stroke-width="3">
+     </path>
+     <path d="M62 36l14 10-6 3" fill="none" stroke="#f4c430" stroke-width="3">
+     </path>
+    </symbol>
+    <symbol id="i-bin" viewbox="0 0 100 100">
+     <rect fill="#1f6b47" height="56" rx="6" width="48" x="26" y="30">
+     </rect>
+     <rect fill="#14472f" height="10" rx="4" width="56" x="22" y="22">
+     </rect>
+     <rect fill="#14472f" height="8" rx="3" width="16" x="42" y="14">
+     </rect>
+     <path d="M38 42v36M50 42v36M62 42v36" stroke="#fff" stroke-opacity=".5" stroke-width="3">
+     </path>
+     <circle cx="12" cy="86" fill="#f4c430" r="5">
+     </circle>
+     <rect fill="#f4c430" height="8" rx="2" transform="rotate(20 86 84)" width="12" x="80" y="80">
+     </rect>
+     <circle cx="90" cy="90" fill="#cfd8d2" r="4">
+     </circle>
+    </symbol>
+   </defs>
+  </svg>
+  <header>
+   <div class="bar">
+    <a class="logo" href="#beranda">
+     Warga
+     <span>
+      Peduli
+     </span>
+    </a>
+    <nav aria-label="Menu utama">
+     <a data-p="beranda" href="#beranda">
+      Beranda
+     </a>
+     <a data-p="lapor" href="#lapor">
+      Lapor
+     </a>
+     <a data-p="tentang" href="#tentang">
+      Tentang Kami
+     </a>
+     <a data-p="blog" href="#blog">
+      Blog
+     </a>
+     <a data-p="kontak" href="#kontak">
+      Kontak
+     </a>
+    </nav>
+   </div>
+  </header>
+  <main>
+   <!-- BERANDA -->
+   <section class="page" id="p-beranda">
+    <div class="hero">
+     <svg aria-label="Pemandangan kota" preserveaspectratio="xMidYMax slice" role="img" viewbox="0 0 1200 420">
+      <circle cx="980" cy="100" fill="#f4c430" opacity=".9" r="54">
+      </circle>
+      <g fill="#cfe0d4">
+       <rect height="250" width="70" x="620" y="170">
+       </rect>
+       <rect height="300" width="90" x="700" y="120">
+       </rect>
+       <rect height="220" width="60" x="800" y="200">
+       </rect>
+       <rect height="270" width="80" x="880" y="150">
+       </rect>
+       <rect height="210" width="90" x="980" y="210">
+       </rect>
+       <rect height="280" width="80" x="1080" y="140">
+       </rect>
+      </g>
+      <g fill="#9fc3ab">
+       <rect height="190" width="60" x="540" y="230">
+       </rect>
+       <rect height="160" width="50" x="760" y="260">
+       </rect>
+       <rect height="150" width="60" x="940" y="270">
+       </rect>
+       <rect height="190" width="60" x="1150" y="230">
+       </rect>
+      </g>
+      <g fill="#fff" opacity=".8">
+       <rect height="12" width="10" x="715" y="145">
+       </rect>
+       <rect height="12" width="10" x="745" y="145">
+       </rect>
+       <rect height="12" width="10" x="715" y="175">
+       </rect>
+       <rect height="12" width="10" x="745" y="175">
+       </rect>
+       <rect height="12" width="10" x="895" y="175">
+       </rect>
+       <rect height="12" width="10" x="925" y="175">
+       </rect>
+       <rect height="12" width="10" x="1095" y="170">
+       </rect>
+       <rect height="12" width="10" x="1125" y="170">
+       </rect>
+      </g>
+      <rect fill="#5d6b63" height="60" width="1200" y="360">
+      </rect>
+      <path d="M0 390h1200" stroke="#f4c430" stroke-dasharray="40 26" stroke-width="4">
+      </path>
+      <g fill="#1f6b47">
+       <circle cx="560" cy="330" r="30">
+       </circle>
+       <circle cx="1010" cy="335" r="26">
+       </circle>
+      </g>
+      <g fill="#8a5a2b">
+       <rect height="24" width="8" x="556" y="340">
+       </rect>
+       <rect height="22" width="8" x="1006" y="342">
+       </rect>
+      </g>
+     </svg>
+     <div class="txt">
+      <h1>
+       Warga Peduli, Kota Terjaga
+      </h1>
+      <p>
+       Lihat fasilitas umum yang rusak? Laporkan dalam satu menit, lengkap dengan foto dan lokasi.
+      </p>
+      <div>
+       <a class="btn" href="#lapor">
+        Laporkan Sekarang
+       </a>
+      </div>
+     </div>
+    </div>
+    <h2 class="sec">
+     Apa yang ingin Anda laporkan?
+    </h2>
+    <p class="lead">
+     Pilih kategori, lalu isi formulir. Laporan Anda membantu petugas bergerak lebih cepat.
+    </p>
+    <div class="cats">
+     <div class="cat">
+      <svg>
+       <use href="#i-tree">
+       </use>
+      </svg>
+      <h3>
+       Pohon tumbang
+      </h3>
+      <p>
+       Menghalangi jalan atau menimpa kabel.
+      </p>
+      <a class="btn sm dk" data-k="Pohon tumbang" href="#lapor">
+       Lapor
+      </a>
+     </div>
+     <div class="cat">
+      <svg>
+       <use href="#i-light">
+       </use>
+      </svg>
+      <h3>
+       Lampu merah mati
+      </h3>
+      <p>
+       Persimpangan tanpa sinyal lalu lintas.
+      </p>
+      <a class="btn sm dk" data-k="Lampu merah mati" href="#lapor">
+       Lapor
+      </a>
+     </div>
+     <div class="cat">
+      <svg>
+       <use href="#i-pole">
+       </use>
+      </svg>
+      <h3>
+       Listrik mati &gt; 5 jam
+      </h3>
+      <p>
+       Padam lama tanpa pemberitahuan.
+      </p>
+      <a class="btn sm dk" data-k="Listrik mati lebih dari 5 jam" href="#lapor">
+       Lapor
+      </a>
+     </div>
+     <div class="cat">
+      <svg>
+       <use href="#i-pot">
+       </use>
+      </svg>
+      <h3>
+       Jalanan berlubang
+      </h3>
+      <p>
+       Membahayakan pengendara.
+      </p>
+      <a class="btn sm dk" data-k="Jalanan berlubang" href="#lapor">
+       Lapor
+      </a>
+     </div>
+     <div class="cat">
+      <svg>
+       <use href="#i-bin">
+       </use>
+      </svg>
+      <h3>
+       Sampah berserakan
+      </h3>
+      <p>
+       Tumpukan liar atau tong sampah penuh.
+      </p>
+      <a class="btn sm dk" data-k="Sampah berserakan" href="#lapor">
+       Lapor
+      </a>
+     </div>
+    </div>
+    <div class="cta">
+     <h2>
+      Satu foto bisa menyelamatkan satu jalan.
+     </h2>
+     <a class="btn" href="#lapor">
+      Laporkan Sekarang
+     </a>
+    </div>
+   </section>
+   <!-- LAPOR -->
+   <section class="page" id="p-lapor">
+    <div class="ph">
+     <h1>
+      Laporkan Kerusakan Fasilitas Publik
+     </h1>
+     <p class="lead">
+      Isi data berikut selengkapnya agar laporan mudah ditindaklanjuti.
+     </p>
+    </div>
+    <div class="grid2">
+     <form class="card" id="f" novalidate="">
+      <label for="kat">
+       Kategori masalah
+      </label>
+      <select id="kat">
+       <option>
+        Pohon tumbang
+       </option>
+       <option>
+        Lampu merah mati
+       </option>
+       <option>
+        Listrik mati lebih dari 5 jam
+       </option>
+       <option>
+        Jalanan berlubang
+       </option>
+       <option>
+        Sampah berserakan
+       </option>
+       <option>
+        Lainnya
+       </option>
+      </select>
+      <label>
+       Foto bukti
+      </label>
+      <div class="photo">
+       <button class="btn sm dk" id="bCam" type="button">
+        Buka kamera
+       </button>
+       <label class="btn sm" for="up" style="margin:0;color:var(--g)">
+        Unggah foto
+       </label>
+       <input accept="image/*" hidden="" id="up" multiple="" type="file"/>
+       <input accept="image/*" capture="environment" hidden="" id="cap" type="file"/>
+      </div>
+      <div id="cam">
+       <video autoplay="" id="v" muted="" playsinline="">
+       </video>
+       <div class="photo">
+        <button class="btn sm" id="bSnap" type="button">
+         Ambil foto
+        </button>
+        <button class="btn sm dk" id="bStop" type="button">
+         Tutup kamera
+        </button>
+       </div>
+      </div>
+      <p class="hint">
+       Izinkan akses kamera saat diminta browser. Jika kamera tidak tersedia, gunakan Unggah foto.
+      </p>
+      <div class="preview" id="pv">
+      </div>
+      <label for="almt">
+       Alamat tempat kerusakan
+      </label>
+      <textarea id="almt" placeholder="Contoh: Jl. Kaliurang km 7, depan SD Negeri, Sleman"></textarea>
+      <div class="row">
+       <div>
+        <label for="tgl">
+         Tanggal ditemukan
+        </label>
+        <input id="tgl" type="date"/>
+       </div>
+       <div>
+        <label for="jam">
+         Waktu ditemukan
+        </label>
+        <input id="jam" type="time"/>
+       </div>
+      </div>
+      <label for="hp">
+       Nomor telepon pelapor
+      </label>
+      <input id="hp" inputmode="tel" placeholder="08xxxxxxxxxx" type="tel"/>
+      <label for="ket">
+       Keterangan tambahan (opsional)
+      </label>
+      <textarea id="ket" placeholder="Ceritakan kondisi kerusakan"></textarea>
+      <p class="err" id="err" role="alert">
+      </p>
+      <button class="btn" type="submit">
+       Kirim laporan
+      </button>
+      <div class="ok" id="ok" role="status">
+      </div>
+     </form>
+     <aside class="card">
+      <h2 style="font-size:1.4rem">
+       Nomor yang harus dihubungi
+      </h2>
+      <ul class="tel">
+       <li>
+        <span>
+         Darurat umum
+         <small>
+          Pohon tumbang, kecelakaan, bencana
+         </small>
+        </span>
+        <b>
+         112
+        </b>
+       </li>
+       <li>
+        <span>
+         PLN Contact Center
+         <small>
+          Listrik padam, kabel putus
+         </small>
+        </span>
+        <b>
+         123
+        </b>
+       </li>
+       <li>
+        <span>
+         Polisi
+         <small>
+          Lampu merah mati, lalu lintas macet
+         </small>
+        </span>
+        <b>
+         110
+        </b>
+       </li>
+       <li>
+        <span>
+         Pemadam kebakaran
+         <small>
+          Pohon besar, korsleting, api
+         </small>
+        </span>
+        <b>
+         113
+        </b>
+       </li>
+       <li>
+        <span>
+         Ambulans
+         <small>
+          Ada korban luka
+         </small>
+        </span>
+        <b>
+         118
+        </b>
+       </li>
+      </ul>
+      <p class="hint">
+       Untuk jalan berlubang dan sampah, hubungi Dinas PU atau Dinas Lingkungan Hidup di kota/kabupaten Anda.
+      </p>
+     </aside>
+    </div>
+   </section>
+   <!-- TENTANG -->
+   <section class="page" id="p-tentang">
+    <div class="ph">
+     <h1>
+      Tentang Kami
+     </h1>
+     <p class="lead">
+      Warga Peduli adalah wadah bagi warga untuk menyampaikan keresahan soal fasilitas publik, agar kota tetap aman, bersih, dan nyaman bersama.
+     </p>
+    </div>
+    <h2 class="sec" style="margin-top:28px">
+     Menjaga fasilitas publik
+    </h2>
+    <div class="law">
+     <h3>
+      Dilarang merusak atau mengganggu fungsinya
+     </h3>
+     <p>
+      UU No. 22 Tahun 2009 tentang Lalu Lintas dan Angkutan Jalan melarang perbuatan yang mengganggu fungsi rambu, marka, lampu lalu lintas, dan fasilitas pejalan kaki.
+     </p>
+    </div>
+    <div class="law">
+     <h3>
+      Perusakan barang milik umum bisa dipidana
+     </h3>
+     <p>
+      KUHP mengatur sanksi bagi pihak yang sengaja merusak atau menghancurkan barang milik orang lain maupun milik bersama.
+     </p>
+    </div>
+    <h2 class="sec" style="margin-top:28px">
+     Merawat fasilitas publik
+    </h2>
+    <div class="law">
+     <h3>
+      Pemerintah wajib memelihara jalan
+     </h3>
+     <p>
+      UU Jalan (UU No. 38 Tahun 2004 dan perubahannya) mewajibkan penyelenggara jalan memelihara jalan agar tetap berfungsi dan aman.
+     </p>
+    </div>
+    <div class="law">
+     <h3>
+      Warga ikut berperan melapor
+     </h3>
+     <p>
+      UU No. 25 Tahun 2009 tentang Pelayanan Publik memberi hak kepada masyarakat untuk menyampaikan pengaduan atas pelayanan publik.
+     </p>
+    </div>
+    <h2 class="sec" style="margin-top:28px">
+     Memanfaatkan fasilitas publik
+    </h2>
+    <div class="law">
+     <h3>
+      Buang sampah pada tempatnya
+     </h3>
+     <p>
+      UU No. 18 Tahun 2008 tentang Pengelolaan Sampah melarang membuang sampah tidak pada tempat yang ditentukan.
+     </p>
+    </div>
+    <div class="law">
+     <h3>
+      Gunakan sesuai peruntukan
+     </h3>
+     <p>
+      Trotoar untuk pejalan kaki, taman untuk umum, dan jalan untuk lalu lintas. Penggunaan di luar fungsi, misalnya berdagang atau parkir, mengikuti Perda setiap daerah.
+     </p>
+    </div>
+    <p class="hint">
+     Ringkasan ini bersifat umum dan bukan nasihat hukum. Periksa Perda di daerah Anda untuk aturan yang berlaku.
+    </p>
+   </section>
+   <!-- BLOG -->
+   <section class="page" id="p-blog">
+    <div class="ph">
+     <h1>
+      Blog: Tips Menjaga &amp; Merawat
+     </h1>
+    </div>
+    <div class="three">
+     <article class="post">
+      <svg>
+       <use height="120" href="#i-bin" style="transform:translateX(40%)" width="120" x="0" y="0">
+       </use>
+      </svg>
+      <div>
+       <h3>
+        Kebiasaan kecil soal sampah
+       </h3>
+       <p>
+        Bawa kantong sendiri, pilah sampah di rumah, dan simpan bungkus sampai menemukan tong sampah. Kebiasaan ini mencegah tumpukan liar.
+       </p>
+      </div>
+     </article>
+     <article class="post">
+      <svg>
+       <use height="120" href="#i-pot" style="transform:translateX(40%)" width="120">
+       </use>
+      </svg>
+      <div>
+       <h3>
+        Menemukan lubang di jalan?
+       </h3>
+       <p>
+        Foto dari jarak aman, catat lokasi, lalu laporkan. Beri tanda sementara seperti ranting atau cone bila aman dilakukan.
+       </p>
+      </div>
+     </article>
+     <article class="post">
+      <svg>
+       <use height="120" href="#i-tree" style="transform:translateX(40%)" width="120">
+       </use>
+      </svg>
+      <div>
+       <h3>
+        Waspada pohon saat hujan deras
+       </h3>
+       <p>
+        Hindari berteduh di bawah pohon tua. Laporkan pohon miring atau berdahan lapuk sebelum tumbang.
+       </p>
+      </div>
+     </article>
+     <article class="post">
+      <svg>
+       <use height="120" href="#i-pole" style="transform:translateX(40%)" width="120">
+       </use>
+      </svg>
+      <div>
+       <h3>
+        Aman di dekat tiang listrik
+       </h3>
+       <p>
+        Jangan menyentuh kabel jatuh, jauhi genangan di sekitarnya, dan segera hubungi PLN 123.
+       </p>
+      </div>
+     </article>
+    </div>
+   </section>
+   <!-- KONTAK -->
+   <section class="page" id="p-kontak">
+    <div class="ph">
+     <h1>
+      Hubungi Kami
+     </h1>
+    </div>
+    <div class="grid2">
+     <form class="card" id="kf" novalidate="">
+      <label for="kn">
+       Nama
+      </label>
+      <input autocomplete="name" id="kn"/>
+      <label for="ke">
+       Email
+      </label>
+      <input autocomplete="email" id="ke" type="email"/>
+      <label for="kp">
+       Pesan
+      </label>
+      <textarea id="kp"></textarea>
+      <p class="err" id="kerr" role="alert">
+      </p>
+      <button class="btn" type="submit">
+       Kirim pesan
+      </button>
+      <div class="ok" id="kok" role="status">
+      </div>
+     </form>
+     <aside class="card">
+      <h2 style="font-size:1.3rem">
+       Kanal resmi
+      </h2>
+      <p>
+       <b>
+        Email:
+       </b>
+       <a href="mailto:halo@wargapeduli.id">
+        halo@wargapeduli.id
+       </a>
+       <br/>
+       <b>
+        WhatsApp:
+       </b>
+       <a href="https://wa.me/6281200000000">
+        0812-0000-0000
+       </a>
+      </p>
+      <p>
+       <b>
+        Media sosial:
+       </b>
+       <br/>
+       <a href="https://instagram.com/" rel="noopener">
+        Instagram
+       </a>
+       &middot;
+       <a href="https://x.com/" rel="noopener">
+        X
+       </a>
+       &middot;
+       <a href="https://facebook.com/" rel="noopener">
+        Facebook
+       </a>
+      </p>
+      <p class="hint">
+       Email, nomor, dan tautan di atas adalah contoh; ganti dengan milik instansi terkait.
+      </p>
+     </aside>
+    </div>
+   </section>
+  </main>
+  <footer>
+   <b>
+    WargaPeduli
+   </b>
+   &ndash; Warga Peduli, Kota Terjaga. &copy; 2026
+  </footer>
+  <script>
+   (function(){
+var pages=['beranda','lapor','tentang','blog','kontak'];
+function route(){var h=(location.hash||'#beranda').slice(1);if(pages.indexOf(h)<0)h='beranda';
+pages.forEach(function(p){document.getElementById('p-'+p).classList.toggle('show',p===h)});
+document.querySelectorAll('nav a').forEach(function(a){a.classList.toggle('on',a.dataset.p===h)});
+if(h!=='lapor')stopCam();window.scrollTo(0,0)}
+window.addEventListener('hashchange',route);route();
+document.querySelectorAll('[data-k]').forEach(function(a){a.addEventListener('click',function(){document.getElementById('kat').value=a.dataset.k==='Listrik mati lebih dari 5 jam'?a.dataset.k:a.dataset.k})});
+
+var imgs=[],stream=null,v=document.getElementById('v'),camBox=document.getElementById('cam'),pv=document.getElementById('pv');
+function addImg(file){imgs.push(file);var im=new Image();im.alt='Foto bukti';im.src=URL.createObjectURL(file);pv.appendChild(im)}
+document.getElementById('up').addEventListener('change',function(e){Array.prototype.forEach.call(e.target.files,addImg);e.target.value=''});
+document.getElementById('cap').addEventListener('change',function(e){Array.prototype.forEach.call(e.target.files,addImg);e.target.value=''});
+function stopCam(){if(stream){stream.getTracks().forEach(function(t){t.stop()});stream=null}camBox.style.display='none'}
+document.getElementById('bCam').addEventListener('click',function(){
+if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(s){stream=s;v.srcObject=s;camBox.style.display='block'}).catch(function(){document.getElementById('cap').click()})
+}else{document.getElementById('cap').click()}});
+document.getElementById('bStop').addEventListener('click',stopCam);
+document.getElementById('bSnap').addEventListener('click',function(){
+if(!v.videoWidth)return;var c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);
+c.toBlob(function(b){addImg(new File([b],'bukti-'+Date.now()+'.jpg',{type:'image/jpeg'}))},'image/jpeg',.9)});
+
+var now=new Date();document.getElementById('tgl').value=now.toISOString().slice(0,10);
+document.getElementById('jam').value=('0'+now.getHours()).slice(-2)+':'+('0'+now.getMinutes()).slice(-2);
+
+document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();
+var err=document.getElementById('err'),ok=document.getElementById('ok');ok.style.display='none';
+var a=document.getElementById('almt').value.trim(),hp=document.getElementById('hp').value.replace(/[\s-]/g,'');
+if(!imgs.length){err.textContent='Tambahkan minimal satu foto bukti.';return}
+if(a.length<10){err.textContent='Isi alamat lokasi kerusakan dengan lengkap.';return}
+if(!document.getElementById('tgl').value||!document.getElementById('jam').value){err.textContent='Isi tanggal dan waktu ditemukan.';return}
+if(!/^(\+62|62|0)8\d{7,12}$/.test(hp)){err.textContent='Nomor telepon belum valid. Contoh: 081234567890.';return}
+err.textContent='';var no='WP-'+Date.now().toString().slice(-6);
+ok.innerHTML='<b>Laporan terkirim.</b> Nomor tiket Anda: <b>'+no+'</b>. Simpan nomor ini untuk menanyakan perkembangan.';ok.style.display='block';
+try{var l=JSON.parse(localStorage.getItem('wp')||'[]');l.push({no:no,kat:document.getElementById('kat').value,almt:a});localStorage.setItem('wp',JSON.stringify(l))}catch(x){}
+stopCam()});
+
+document.getElementById('kf').addEventListener('submit',function(e){e.preventDefault();
+var er=document.getElementById('kerr'),ok=document.getElementById('kok');
+if(!document.getElementById('kn').value.trim()||!/\S+@\S+\.\S+/.test(document.getElementById('ke').value)||!document.getElementById('kp').value.trim()){er.textContent='Lengkapi nama, email yang valid, dan pesan.';return}
+er.textContent='';ok.textContent='Pesan terkirim. Kami akan membalas lewat email.';ok.style.display='block'});
+})();
+  </script>
+ </body>
+</html>
